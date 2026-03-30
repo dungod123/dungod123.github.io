@@ -1,0 +1,64 @@
+/* Reset cơ bản */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #5b0e35; /* Màu nền tím mận giống trong hình */
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  padding-bottom: 50px;
+}
+
+.page-title {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Lưới hiển thị các dự án */
+.grid-container {
+  display: grid;
+  /* Tự động chia cột, mỗi cột rộng tối thiểu 220px */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 0 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid-item {
+  background-color: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  /* Tạo chiều cao ngẫu nhiên chút xíu cho ảnh đỡ nhàm chán */
+  height: 320px; 
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cắt ảnh vừa vặn với khung */
+  display: block;
+}
+
+/* Hiệu ứng phóng to khi trỏ chuột vào */
+.grid-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+
+/* Dòng chữ tải thêm dữ liệu */
+.loading {
+  text-align: center;
+  padding: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffb6c1;
+  display: none; /* Ẩn đi khi không tải */
+}
