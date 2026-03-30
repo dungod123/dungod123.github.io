@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix Infinite Scroll</title>
+<style>
+  body {
+    background-color: #141414;
+    margin: 0;
+    padding: 50px 20px;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .netflix-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .slider-track {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 20px 0; /* Cho phép phóng to ảnh khi hover mà không bị cắt viền */
+  }
+
+  /* Ẩn thanh cuộn mặc định */
+  .slider-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slider-item {
+    width: 250px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    scroll-snap-align: start;
+    flex-shrink: 0; /* Ngăn không cho flexbox bóp méo kích thước ảnh */
+  }
+
+  /* Hiệu ứng phóng to mượt mà */
+  .slider-item:hover {
+    transform: scale(1.08);
+    z-index: 10;
+  }
+
+  .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 15px 10px;
+    z-index: 11;
+    transition: background 0.2s;
+  }
+
+  .slider-btn:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .prev-btn { left: 0; }
+  .next-btn { right: 0; }
+</style>
+</head>
+<body>
+
+<div class="netflix-container">
+  <button class="slider-btn prev-btn">❮</button>
+  <div class="slider-track" id="track">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=1" alt="Test Image 1">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=2" alt="Test Image 2">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=3" alt="Test Image 3">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=4" alt="Test Image 4">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=5" alt="Test Image 5">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=6" alt="Test Image 6">
+    <img class="slider-item" src="https://picsum.photos/300/200?random=7" alt="Test Image 7">
+  </div>
+  <button class="slider-btn next-btn">❯</button>
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+
+  // Điều khiển cuộn khi nhấn nút (250px chiều rộng ảnh + 15px khoảng cách)
+  nextBtn.addEventListener('click', () => {
+    track.scrollBy({ left: 265, behavior: 'smooth' });
+  });
+
+  prevBtn.addEventListener('click', () => {
+    track.scrollBy({ left: -265, behavior: 'smooth' });
+  });
+
+  // Logic tạo hiệu ứng cuộn vô tận
+  track.addEventListener('scroll', () => {
+    // Kích hoạt khi cuộn gần sát lề phải
+    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 5) {
+      const firstItem = track.firstElementChild;
+      
+      // 複製 (ふくせい - fukusei - nhân bản) thẻ đầu tiên và đẩy xuống cuối
+      track.appendChild(firstItem.cloneNode(true));
+      track.removeChild(firstItem);
+      
+      // Giữ nguyên vị trí thanh cuộn để tránh hiện tượng giật màn hình
+      track.scrollLeft -= (firstItem.clientWidth + 15); 
+    }
+  });
+</script>
+
+</body>
+</html>
